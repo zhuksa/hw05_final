@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Пост {{ post_view.author.username }}{% endblock %}
+{% block header %} {% endblock %}
+
+{% block content %}<br>
+  <main role="main" class="container">
+    <div class="row">
+      
+      <div class="col-md-3 mb-3 mt-1">
+        {% include 'includes/author_card.html' with author=post_view.author %}
+      </div>
+
+      <div class="col-md-9"> 
+        {% if post_view %}
+          {% include 'includes/post_item.html' with post=post_view %}
+        {% endif %}
+        {% if post_edit %}
+          {% include 'includes/post_item.html' with post=post_edit %}
+        {% endif %}
+        {% if post %}
+          {% include 'includes/post_item.html' with post=post %}
+        {% endif %}
+        
+        {% include 'includes/comments.html' with post=post_view %}
+      </div>
+
+
+    </div>         
+  </main>
+{% endblock %}
