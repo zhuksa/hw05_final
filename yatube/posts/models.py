@@ -8,7 +8,7 @@ class Group(models.Model):
     title = models.CharField(
         verbose_name='Название группы',
         max_length=200,
-        help_text='Название группы'
+        help_text='Укажите заголовок группы'
     )
 
     slug = models.SlugField('Адрес', unique=True)
@@ -25,17 +25,19 @@ class Group(models.Model):
 
 class Post(models.Model):
     text = models.TextField(
-        verbose_name='Текст',
-        help_text='Напишите ваш пост'
+        verbose_name='Текст поста',
+        help_text='Введите текст поста'
     )
 
     pub_date = models.DateTimeField('Дата публикации', auto_now_add=True)
 
     author = models.ForeignKey(User,
+                               verbose_name='Автор',
                                on_delete=models.CASCADE,
                                related_name='posts')
 
     group = models.ForeignKey(Group,
+                              verbose_name='Группа',
                               on_delete=models.SET_NULL,
                               related_name='posts',
                               blank=True,
