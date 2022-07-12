@@ -212,7 +212,8 @@ class PostPagesTests(TestCase):
 
         # подписываемся на автора поста
         self.authorized_client.get(
-            reverse('posts:profile_follow', kwargs={'username': self.post.author})
+            reverse('posts:profile_follow',
+                    kwargs={'username': self.post.author})
         )
         # проверяем, что follower_client подписался
         response_2 = self.authorized_client.get(reverse('posts:follow_index'))
@@ -221,7 +222,8 @@ class PostPagesTests(TestCase):
 
     def test_unfollow(self):
         self.authorized_client.get(
-            reverse('posts:profile_follow', kwargs={'username': self.post.author})
+            reverse('posts:profile_follow',
+                    kwargs={'username': self.post.author})
         )
 
         response_1 = self.authorized_client.get(reverse('posts:follow_index'))
@@ -230,7 +232,8 @@ class PostPagesTests(TestCase):
         self.assertEqual((len(page_object_1)), 1)
 
         self.authorized_client.get(
-            reverse('posts:profile_unfollow', kwargs={'username': self.post.author})
+            reverse('posts:profile_unfollow',
+                    kwargs={'username': self.post.author})
         )
 
         response_2 = self.authorized_client.get(reverse('posts:follow_index'))
