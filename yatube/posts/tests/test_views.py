@@ -8,7 +8,6 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from http import HTTPStatus
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.core.cache import cache
 
 from posts.models import Post, Group
 
