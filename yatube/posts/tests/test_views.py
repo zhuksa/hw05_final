@@ -192,12 +192,10 @@ class PostPagesTests(TestCase):
                 form_field = response.context['form'].fields[value]
                 self.assertIsInstance(form_field, expected)
 
-
     def test_page_not_found(self):
         """ Доступ к несуществующей странице. """
         response = self.guest_client.get('misc/404.html')
         self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
-
 
     def test_add_follow(self):
         """ подписка: обращаешься к follow_index, через context['page'].object_list[0]
