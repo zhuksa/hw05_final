@@ -1,6 +1,7 @@
 import shutil
 import tempfile
 
+from django.urls.base import reverse
 from django.contrib.auth import get_user_model
 from django.test import TestCase, Client
 from django.conf import settings
@@ -73,3 +74,67 @@ class PostFormTests(TestCase):
         self.authorized_client.force_login(self.user)
         self.authorized_author_client = Client()
         self.authorized_author_client.force_login(self.author)
+
+    def test_create_new_post(self):
+        """Создание нового поста через форму страницы new_post"""
+
+        posts_count = Post.objects.count()
+
+        form_data = {
+            'text': 'Тестовая запись в форме нового поста',
+            'group': self.group.id,
+            'image': self.uploaded,
+        }
+
+        response = self.authorized_client.post(
+            reverse('posts:new_post'),
+            data=form_data,
+            follow=True,
+        )
+
+        self.assertRedirects(response, reverse('posts:index'))
+        self.assertEqual(Post.objects.count(), posts_count + 1)
+        self.assertTrue(
+            Post.objects.filter(
+                text=form_data['text'],
+                group=form_data['group'],
+                image='posts/small.gif',
+            ).exists()
+        )
+
+    def test_update_post_edit(self):
+        """
+        При редактировании поста через форму изменяется соответствующая запись
+        в базе данных.
+        """
+
+        form_data = {
+            'text': 'Отредактированная запись в форме страницы post_edit',
+            'group': self.group.id,
+            'image': self.uploaded2,
+        }
+
+        response = self.authorized_author_client.post(
+            reverse(
+                'posts:post_edit',
+                kwargs={
+                    'username': self.author.username,
+                    'post_id': self.post.id}
+            ),
+            data=form_data,
+            follow=True,
+        )
+
+        self.assertRedirects(response, reverse(
+                             'posts:post',
+                             kwargs={
+                                 'username': self.author.username,
+                                 'post_id': self.post.id}))
+
+        self.assertTrue(
+            Post.objects.filter(
+                text=form_data['text'],
+                group=form_data['group'],
+                image='posts/small2.gif',
+            ).exists()
+        )

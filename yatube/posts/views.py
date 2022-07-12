@@ -31,9 +31,9 @@ def index(request):
 
     paginator = Paginator(posts, settings.POSTS_PER_PAGE)
     page_number = request.GET.get('page')
-    page = paginator.get_page(page_number)
+    page_obj = paginator.get_page(page_number)
 
-    return render(request, 'posts/index.html', {'page': page})
+    return render(request, 'posts/index.html', {'page_obj': page_obj})
 
 
 def group_posts(request, slug):
@@ -41,12 +41,12 @@ def group_posts(request, slug):
     post = group.posts.all()
     paginator = Paginator(post, settings.POSTS_PER_PAGE)
     page_number = request.GET.get('page')
-    page = paginator.get_page(page_number)
+    page_obj = paginator.get_page(page_number)
 
     return render(
         request,
         'posts/group.html',
-        {'group': group, 'page': page}
+        {'group': group, 'page_obj': page_obj}
     )
 
 
@@ -136,7 +136,7 @@ def profile(request, username):
 
     paginator = Paginator(author.posts.all(), settings.POSTS_PER_PAGE)
     page_number = request.GET.get('page')
-    page = paginator.get_page(page_number)
+    page_obj = paginator.get_page(page_number)
 
     posts_count = author.posts.count()
     followers_count = Follow.objects.filter(author=author).count()
@@ -148,7 +148,7 @@ def profile(request, username):
     context = {
         'author': author,
         'posts_count': posts_count,
-        'page': page,
+        'page_obj': page_obj,
         'follow_count': follow_count,
         'followers_count': followers_count,
         'following': following,
@@ -163,9 +163,9 @@ def follow_index(request):
 
     paginator = Paginator(posts, settings.POSTS_PER_PAGE)
     page_number = request.GET.get('page')
-    page = paginator.get_page(page_number)
+    page_obj = paginator.get_page(page_number)
 
-    return render(request, "posts/follow.html", {'page': page})
+    return render(request, "posts/follow.html", {'page_obj': page_obj})
 
 
 @login_required
