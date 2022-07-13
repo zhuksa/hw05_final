@@ -101,7 +101,7 @@ class PostPagesTests(TestCase):
         """Index использует соответствующий контекст."""
 
         response = self.guest_client.get(reverse('posts:index'))
-        first_object = response.context['page_obj'].object_list[0]
+        first_object = response.context['page'].object_list[0]
         post_text_0 = first_object.text
 
         self.assertEqual(
@@ -132,7 +132,7 @@ class PostPagesTests(TestCase):
             kwargs={'username': self.author.username})
         )
 
-        first_object = response.context['page_obj'][0]
+        first_object = response.context['page'][0]
         post_text_0 = first_object.text
         post_author_0 = first_object.author.username
         post_pic_0 = first_object.image
@@ -207,7 +207,7 @@ class PostPagesTests(TestCase):
 
         # проверяем, что follower_client еще не подписан на автора поста
         response_1 = self.authorized_client.get(reverse('posts:follow_index'))
-        page_object_1 = response_1.context['page_obj'].object_list
+        page_object_1 = response_1.context['page'].object_list
         self.assertEqual((len(page_object_1)), 0)
 
         # подписываемся на автора поста
@@ -217,7 +217,7 @@ class PostPagesTests(TestCase):
         )
         # проверяем, что follower_client подписался
         response_2 = self.authorized_client.get(reverse('posts:follow_index'))
-        page_object_2 = response_2.context['page_obj'].object_list
+        page_object_2 = response_2.context['page'].object_list
         self.assertEqual((len(page_object_2)), 1)
 
     def test_unfollow(self):
@@ -227,7 +227,7 @@ class PostPagesTests(TestCase):
         )
 
         response_1 = self.authorized_client.get(reverse('posts:follow_index'))
-        page_object_1 = response_1.context['page_obj'].object_list
+        page_object_1 = response_1.context['page'].object_list
 
         self.assertEqual((len(page_object_1)), 1)
 
@@ -237,32 +237,5 @@ class PostPagesTests(TestCase):
         )
 
         response_2 = self.authorized_client.get(reverse('posts:follow_index'))
-        page_object_2 = response_2.context['page_obj'].object_list
+        page_object_2 = response_2.context['page'].object_list
         self.assertEqual((len(page_object_2)), 0)
-
-
-class PaginatorPagesTests(TestCase):
-
-    @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
-        user = User.objects.create(
-            first_name='Иван',
-            last_name='Иванов',
-            username='Ivan',
-            email='ivan@ivan.ru',
-        )
-
-        for i in range(1, 13):
-            cls.post = Post.objects.create(
-                text='Тестовый текст поста {i}',
-                author=user,
-            )
-
-    def test_first_page_contains_ten_posts(self):
-        response = self.client.get(reverse('posts:index'))
-        self.assertEqual(len(response.context['page_obj']), 2)
-
-    def test_second_page_contains_two_posts(self):
-        response = self.client.get(reverse('posts:index') + '?page=2')
-        self.assertEqual(len(response.context['page_obj']), 2)
