@@ -42,4 +42,19 @@ urlpatterns = [
     path('<str:username>/unfollow/',
          views.profile_unfollow,
          name='profile_unfollow'),
+
+    path('create/',
+         views.post_edit,
+         name='post_create'),
+
+    path('profile/<str:username>/follow/',
+         views.post_edit,
+         name='post_profile'),
+
+    path('posts/<int:post_id>/edit',
+         views.post_edit,
+         name='post_edit'),
+
+    path('profile/<str:username>/',
+         views.profile, name='post_profile')
 ]
