@@ -17,6 +17,8 @@ def page_not_found(request, exception):
         status=404
     )
 
+def csrf_failure(request, reason=''):
+    return render(request, 'misc/403.html')
 
 def server_error(request):
     return render(request, 'misc/500.html', status=500)
