@@ -139,4 +139,3 @@ def test_update_post_edit(self):
             image='posts/small2.gif',
         ).exists()
     )
-    

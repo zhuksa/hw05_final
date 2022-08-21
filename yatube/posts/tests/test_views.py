@@ -92,7 +92,7 @@ class PostPagesTests(TestCase):
         templates_page_names = {
             'posts/index.html': reverse('posts:index'),
             'posts/group_list.html': reverse('posts:group_list',
-                                     kwargs={'slug': self.group.slug}),
+                                             kwargs={'slug': self.group.slug}),
             'posts/create_post.html': reverse('posts:post_create'),
         }
 
@@ -288,7 +288,8 @@ class PostPagesTests(TestCase):
             author=self.author,
         )
 
-        posts_with_cache = self.guest_client.get(reverse('posts:index')).content
+        posts_with_cache = self.guest_client.get\
+            (reverse('posts:index')).content
 
         self.assertEqual(
             posts_in_bd,
@@ -297,7 +298,8 @@ class PostPagesTests(TestCase):
 
         cache.clear()
 
-        posts_without_cache = self.guest_client.get(reverse('posts:index')).content
+        posts_without_cache = self.guest_client.get\
+            (reverse('posts:index')).content
 
         self.assertNotEqual(
             posts_in_bd,
@@ -318,7 +320,8 @@ class PostPagesTests(TestCase):
         self.assertEqual((len(page_object_1)), 0)
 
         self.authorized_client.get(
-            reverse('posts:profile_follow', kwargs={'username': self.post.author})
+            reverse('posts:profile_follow',
+                    kwargs={'username': self.post.author})
         )
         response_2 = self.authorized_client.get(reverse('posts:follow_index'))
         page_object_2 = response_2.context['page'].object_list
@@ -326,7 +329,8 @@ class PostPagesTests(TestCase):
 
     def test_unfollow(self):
         self.authorized_client.get(
-            reverse('posts:profile_follow', kwargs={'username': self.post.author})
+            reverse('posts:profile_follow',
+                    kwargs={'username': self.post.author})
         )
 
         response_1 = self.authorized_client.get(reverse('posts:follow_index'))
@@ -335,7 +339,8 @@ class PostPagesTests(TestCase):
         self.assertEqual((len(page_object_1)), 1)
 
         self.authorized_client.get(
-            reverse('posts:profile_unfollow', kwargs={'username': self.post.author})
+            reverse('posts:profile_unfollow',
+                    kwargs={'username': self.post.author})
         )
 
         response_2 = self.authorized_client.get(reverse('posts:follow_index'))
