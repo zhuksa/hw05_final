@@ -84,6 +84,14 @@ class PostURLTests(TestCase):
                 response = self.authorized_client.get(address)
                 self.assertEqual(response.status_code, HTTPStatus.FOUND)
 
+    def test_create_post_redirect_anonymous_on_admin_login(self):
+        """Страница 'create_post' перенаправит анонимного
+        пользователя на страницу логина."""
+
+        response = self.guest_client.get('/create/', follow=True)
+        self.assertRedirects(
+            response, '/auth/login/?next=/create/')
+
     def test_post_edit_uses_correct_template(self):
         """post_edit использует соответствующий шаблон."""
 
