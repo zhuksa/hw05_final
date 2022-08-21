@@ -9,7 +9,6 @@ handler500 = 'posts.views.server_error'
 handler403 = 'posts.views.failure'
 
 
-
 urlpatterns = [
     path('about/', include('about.urls', namespace='about')),
     path('', include('posts.urls', namespace='posts')),
