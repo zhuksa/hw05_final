@@ -198,25 +198,6 @@ class PostPagesTests(TestCase):
             'Неверный текст поста на главной странице'
         )
 
-    def test_post_detail_uses_correct_context(self):
-        """Post_detail использует соответствующий контекст."""
-
-        response = self.guest_client.get(reverse(
-            'posts:post_detail',
-            kwargs={'post_id': self.post.id})
-        )
-
-        self.assertEqual(response.context['post_detail'].text,
-                         self.post.text,
-                         'Неверный текст поста на странице поста')
-
-        self.assertEqual(response.context['post_detail'].author.username,
-                         self.author.username,
-                         'Неверный автор поста на странице поста')
-        self.assertEqual(response.context['post_detail'].image,
-                         self.post.image,
-                         'Неверная картинка на странице поста')
-
     def test_post_have_correct_group_on_group_posts(self):
         """Пост не попал в группу, для которой не был предназначен"""
 
