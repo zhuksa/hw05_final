@@ -103,39 +103,39 @@ class PostFormTests(TestCase):
         )
 
 
-def test_update_post_edit(self):
-    """
-    При редактировании поста через форму изменяется соответствующая запись
-    в базе данных.
-    """
+    def test_update_post_edit(self):
+        """
+        При редактировании поста через форму изменяется соответствующая запись
+        в базе данных.
+        """
 
-    form_data = {
-        'text': 'Отредактированная запись в форме страницы post_edit',
-        'group': self.group.id,
-        'image': self.uploaded2,
-    }
+        form_data = {
+            'text': 'Отредактированная запись в форме страницы post_edit',
+            'group': self.group.id,
+            'image': self.uploaded2,
+        }
 
-    response = self.authorized_author_client.post(
-        reverse(
-            'post_edit',
+        response = self.authorized_author_client.post(
+            reverse(
+                'posts:post_edit',
+                kwargs={
+                    'username': self.author.username,
+                    'post_id': self.post.id}
+            ),
+         data=form_data,
+            follow=True,
+     )
+
+        self.assertRedirects(response, reverse(
+            'posts:post_detail',
             kwargs={
                 'username': self.author.username,
-                'post_id': self.post.id}
-        ),
-        data=form_data,
-        follow=True,
-    )
+                'post_id': self.post.id}))
 
-    self.assertRedirects(response, reverse(
-        'post',
-        kwargs={
-            'username': self.author.username,
-            'post_id': self.post.id}))
-
-    self.assertTrue(
-        Post.objects.filter(
-            text=form_data['text'],
-            group=form_data['group'],
-            image='posts/small2.gif',
-        ).exists()
-    )
+        self.assertTrue(
+            Post.objects.filter(
+                text=form_data['text'],
+                group=form_data['group'],
+                image='posts/small2.gif',
+            ).exists()
+        )
