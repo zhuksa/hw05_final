@@ -145,7 +145,7 @@ def profile(request, username):
     author = get_object_or_404(User, username=username)
 
     paginator = Paginator(author.posts.all(), settings.POSTS_PER_PAGE)
-    page_number = request.GET.get('page')
+    page_number = request.GET.get('page_obj')
     page = paginator.get_page(page_number)
 
     posts_count = author.posts.count()

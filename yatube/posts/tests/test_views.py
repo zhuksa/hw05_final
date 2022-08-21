@@ -307,7 +307,7 @@ class PostPagesTests(TestCase):
             'Количество постов одинаково')
 
     def test_add_follow(self):
-        """ подписка: обращаешься к follow_index, через context['page'].object_list[0]
+        """ подписка: обращаешься к follow_index, через context['page_obj'].object_list[0]
         находишь количество подписок, и сравниваешь их с 0, т.е проверяешь,
         что еще не подписалась ни на кого, затем подписываешься
         self.follower_client.get(reverse('profile_follow',
