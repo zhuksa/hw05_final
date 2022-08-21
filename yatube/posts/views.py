@@ -59,7 +59,7 @@ def group_posts(request, slug):
     )
 
 
-def post_detail(request,  post_id):
+def post_detail(request, post_id):
     post_detail = get_object_or_404(Post,
                                     id=post_id)
     form = CommentForm(request.POST or None)
