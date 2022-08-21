@@ -34,7 +34,7 @@ urlpatterns = [
          views.post_detail,
          name='post_detail'),
 
-    path('posts/<int:post_id>/', views.post_detail, name='post_detail'),
+    path('posts/<int:posts_id>/', views.post_detail, name='post_detail'),
 
     path('<str:username>/<int:post_id>/edit/',
          views.post_edit,
