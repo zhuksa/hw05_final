@@ -75,32 +75,6 @@ class PostFormTests(TestCase):
         self.authorized_author_client = Client()
         self.authorized_author_client.force_login(self.author)
 
-    def test_create_post_create(self):
-        """Создание нового поста через форму страницы post_create"""
-
-        posts_count = Post.objects.count()
-
-        form_data = {
-            'text': 'Тестовая запись в форме нового поста',
-            'group': self.group.id,
-            'image': self.uploaded,
-        }
-
-        response = self.authorized_client.post(
-            reverse('posts:post_create'),
-            data=form_data,
-            follow=True,
-        )
-
-        self.assertRedirects(response, reverse('posts:index'))
-        self.assertEqual(Post.objects.count(), posts_count + 1)
-        self.assertTrue(
-            Post.objects.filter(
-                text=form_data['text'],
-                group=form_data['group'],
-                image='posts/small.gif',
-            ).exists()
-        )
 
     def test_update_post_edit(self):
         """

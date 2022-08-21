@@ -109,7 +109,7 @@ def post_create(request):
         post.author = request.user
         post.save()
 
-        return redirect('posts:index')
+        return redirect('posts:profile', request.user.username)
 
     return render(
         request,
