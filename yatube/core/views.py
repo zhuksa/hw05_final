@@ -9,9 +9,5 @@ def csrf_failure(request, reason=''):
     return render(request, 'core/403csrf.html')
 
 
-def failure_403(request, reason=''):
-    return render(request, 'core/404.html')
-
-
-def failure_403(request, reason=''):
+def failure(request, reason=''):
     return render(request, 'core/403.html')
