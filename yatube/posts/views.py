@@ -109,14 +109,13 @@ def post_create(request):
         post.author = request.user
         post.save()
 
-        return redirect('posts:profile', request.user.username)
+        return redirect('posts:index')
 
     return render(
         request,
         'posts/create_post.html',
         {'form': form}
     )
-    return render(request, template, context)
 
 
 def post_edit(request, username, post_id):
