@@ -288,8 +288,8 @@ class PostPagesTests(TestCase):
             author=self.author,
         )
 
-        posts_with_cache = self.guest_client.get\
-            (reverse('posts:index')).content
+        posts_with_cache = self.guest_client.get(reverse
+                                                 ('posts:index')).content
 
         self.assertEqual(
             posts_in_bd,
@@ -298,8 +298,8 @@ class PostPagesTests(TestCase):
 
         cache.clear()
 
-        posts_without_cache = self.guest_client.get\
-            (reverse('posts:index')).content
+        posts_without_cache = self.guest_client.get(reverse
+                                                    ('posts:index')).content
 
         self.assertNotEqual(
             posts_in_bd,
