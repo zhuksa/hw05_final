@@ -83,7 +83,7 @@ def post_detail(request, username, post_id):
         'following': following,
     }
 
-    return render(request, 'posts/post_detail.html', context)
+    return render(request, 'posts/post_detail.html', username, context)
 
 
 @login_required
