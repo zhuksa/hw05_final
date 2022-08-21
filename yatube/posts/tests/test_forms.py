@@ -102,6 +102,7 @@ class PostFormTests(TestCase):
             ).exists()
         )
 
+
 def test_update_post_edit(self):
     """
     При редактировании поста через форму изменяется соответствующая запись
