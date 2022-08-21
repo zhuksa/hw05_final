@@ -43,6 +43,8 @@ POSTS_PER_PAGE = 10
 
 CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
 
+FAILURE_VIEW = 'core.views.failure'
+
 LOGIN_URL = 'users:login'
 LOGIN_REDIRECT_URL = 'posts:index'
 
