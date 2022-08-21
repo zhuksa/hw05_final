@@ -5,7 +5,7 @@
 {% block content %}<br>
     <p align="center"><i>{{ group.description }}</i></p>
 
-  {% for post in page %}
+  {% for post in page_obj %}
     {% include "includes/post_item.html" with post=post %}
   {% endfor %}
 

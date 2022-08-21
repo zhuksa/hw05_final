@@ -105,7 +105,7 @@ class PostPagesTests(TestCase):
         """Index использует соответствующий контекст."""
 
         response = self.guest_client.get(reverse('posts:index'))
-        first_object = response.context['page'].object_list[0]
+        first_object = response.context['page_obj'].object_list[0]
         post_text_0 = first_object.text
         post_author_0 = first_object.author.username
 
@@ -177,7 +177,7 @@ class PostPagesTests(TestCase):
             kwargs={'username': self.author.username})
         )
 
-        first_object = response.context['page'][0]
+        first_object = response.context['page_obj'][0]
         post_text_0 = first_object.text
         post_author_0 = first_object.author.username
         post_pic_0 = first_object.image
@@ -316,7 +316,7 @@ class PostPagesTests(TestCase):
 
         # проверяем, что follower_client еще не подписан на автора поста
         response_1 = self.authorized_client.get(reverse('posts:follow_index'))
-        page_object_1 = response_1.context['page'].object_list
+        page_object_1 = response_1.context['page_obj'].object_list
         self.assertEqual((len(page_object_1)), 0)
 
         self.authorized_client.get(
@@ -324,7 +324,7 @@ class PostPagesTests(TestCase):
                     kwargs={'username': self.post.author})
         )
         response_2 = self.authorized_client.get(reverse('posts:follow_index'))
-        page_object_2 = response_2.context['page'].object_list
+        page_object_2 = response_2.context['page_obj'].object_list
         self.assertEqual((len(page_object_2)), 1)
 
     def test_unfollow(self):
@@ -334,7 +334,7 @@ class PostPagesTests(TestCase):
         )
 
         response_1 = self.authorized_client.get(reverse('posts:follow_index'))
-        page_object_1 = response_1.context['page'].object_list
+        page_object_1 = response_1.context['page_obj'].object_list
 
         self.assertEqual((len(page_object_1)), 1)
 
@@ -344,5 +344,5 @@ class PostPagesTests(TestCase):
         )
 
         response_2 = self.authorized_client.get(reverse('posts:follow_index'))
-        page_object_2 = response_2.context['page'].object_list
+        page_object_2 = response_2.context['page_obj'].object_list
         self.assertEqual((len(page_object_2)), 0)
