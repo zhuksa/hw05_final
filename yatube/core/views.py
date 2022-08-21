@@ -14,4 +14,4 @@ def failure_403(request, reason=''):
 
 
 def failure_403(request, reason=''):
-    return render(request, 'core/404.html')
+    return render(request, 'core/403.html')
