@@ -65,27 +65,6 @@ class Post(models.Model):
     def __str__(self):
         return self.text[:15]
 
-    def test_help_text_name(self):
-        """help_text в модели Group совпадает"""
-        group = GroupModelTest.group
-        help_text_fields = {
-            'title': 'Название группы',
-            'description': 'Описание группы',
-        }
-
-        for value, expected in help_text_fields.items():
-            with self.subTest(value=value):
-                self.assertEqual(
-                    group._meta.get_field(value).help_text,
-                    expected)
-
-    def test_group_name_is_title_fild(self):
-        """В поле __str__  объекта group записано значение поля group.title."""
-
-        group = GroupModelTest.group
-        expected_object_name = group.title
-        self.assertEqual(expected_object_name, str(group))
-
 
 class Comment(models.Model):
     post = models.ForeignKey(Post,

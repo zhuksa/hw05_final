@@ -92,7 +92,7 @@ class PostPagesTests(TestCase):
         templates_page_names = {
             'posts/index.html': reverse('posts:index'),
             'posts/group_list.html': reverse('posts:group_list',
-                                  kwargs={'slug': self.group.slug}),
+                                     kwargs={'slug': self.group.slug}),
             'posts/create_post.html': reverse('posts:post_create'),
         }
 
@@ -108,8 +108,6 @@ class PostPagesTests(TestCase):
         first_object = response.context['page'].object_list[0]
         post_text_0 = first_object.text
         post_author_0 = first_object.author.username
-        #group_title_0 = first_object.group.title
-        post_pic_0 = first_object.image
 
         self.assertEqual(
             post_text_0,

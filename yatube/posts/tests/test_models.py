@@ -97,7 +97,7 @@ class GroupModelTest(TestCase):
         help_text_fields = {
             'title': 'Название группы',
             'description': 'Описание группы',
-            }
+        }
         for value, expected in help_text_fields.items():
             with self.subTest(value=value):
                 self.assertEqual(

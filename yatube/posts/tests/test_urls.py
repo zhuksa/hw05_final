@@ -56,7 +56,8 @@ class PostURLTests(TestCase):
             'posts/group_list.html': f'/group/{self.group.slug}/',
             'posts/create_post.html': '/create/',
             'posts/profile.html': f'/{self.author.username}/',
-            'posts/post_detail.html': f'/{self.author.username}/{self.post.id}/',
+            'posts/post_detail.html': f'/{self.author.username}/'
+                                      f'{self.post.id}/',
         }
 
         for template, address in templates_url_names.items():
