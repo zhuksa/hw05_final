@@ -12,18 +12,14 @@ from .models import Follow, Post, Group, User
 def page_not_found(request, exception):
     return render(
         request,
-        'misc/404.html',
+        'core/404.html',
         {'path': request.path},
         status=404
     )
 
 
-def csrf_failure(request, reason=''):
-    return render(request, 'misc/403.html')
-
-
 def server_error(request):
-    return render(request, 'misc/500.html', status=500)
+    return render(request, 'core/500.html', status=500)
 
 
 @require_GET
@@ -49,26 +45,26 @@ def group_posts(request, slug):
 
     return render(
         request,
-        'posts/group.html',
+        'posts/group_list.html',
         {'group': group, 'page': page}
     )
 
 
-def post_view(request, username, post_id):
-    post_view = get_object_or_404(Post, author__username=username, id=post_id)
+def post_detail(request, username, post_id):
+    post_detail = get_object_or_404(Post, author__username=username, id=post_id)
     form = CommentForm(request.POST or None)
-    comments = post_view.comments.all()
+    comments = post_detail.comments.all()
 
-    posts_count = post_view.author.posts.count()
-    followers_count = Follow.objects.filter(author=post_view.author).count()
-    follow_count = Follow.objects.filter(user=post_view.author).count()
+    posts_count = post_detail.author.posts.count()
+    followers_count = Follow.objects.filter(author=post_detail.author).count()
+    follow_count = Follow.objects.filter(user=post_detail.author).count()
 
     following = request.user.is_authenticated and Follow.objects.filter(
-        user=request.user, author=post_view.author).exists()
+        user=request.user, author=post_detail.author).exists()
 
     context = {
         'form': form,
-        'post_view': post_view,
+        'post_detail': post_detail,
         'posts_count': posts_count,
         'comments': comments,
         'follow_count': follow_count,
@@ -76,7 +72,7 @@ def post_view(request, username, post_id):
         'following': following,
     }
 
-    return render(request, 'posts/post.html', context)
+    return render(request, 'posts/post_detail.html', context)
 
 
 @login_required
@@ -90,11 +86,11 @@ def add_comment(request, username, post_id):
         comment.post = post
         comment.save()
 
-    return redirect('posts:post', username, post_id)
+    return redirect('posts:post_detail', username, post_id)
 
 
 @login_required
-def new_post(request):
+def post_create(request):
     form = PostForm(request.POST or None, files=request.FILES or None)
 
     if form.is_valid():
@@ -106,12 +102,11 @@ def new_post(request):
 
     return render(
         request,
-        'posts/new_post.html',
+        'posts/create_post.html',
         {'form': form}
     )
 
 
-@login_required
 def post_edit(request, username, post_id):
     post_edit = get_object_or_404(Post, id=post_id)
     form = PostForm(
@@ -121,16 +116,16 @@ def post_edit(request, username, post_id):
     )
 
     if request.user != post_edit.author:
-        return redirect('posts:post', post_edit.author, post_edit.id)
+        return redirect('posts:post_detail', post_edit.author, post_edit.id)
 
     if form.is_valid():
         post_edit.save()
 
-        return redirect('posts:post', post_edit.author, post_edit.id)
+        return redirect('posts:post_detail', post_edit.author, post_edit.id)
 
     return render(
         request,
-        'posts/new_post.html',
+        'posts/create_post.html',
         {'form': form, 'post_edit': post_edit}
     )
 

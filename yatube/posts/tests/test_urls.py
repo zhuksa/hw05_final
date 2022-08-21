@@ -53,10 +53,10 @@ class PostURLTests(TestCase):
 
         templates_url_names = {
             'posts/index.html': '/',
-            'posts/group.html': f'/group/{self.group.slug}/',
-            'posts/new_post.html': '/new/',
+            'posts/group_list.html': f'/group/{self.group.slug}/',
+            'posts/create_post.html': '/create/',
             'posts/profile.html': f'/{self.author.username}/',
-            'posts/post.html': f'/{self.author.username}/{self.post.id}/',
+            'posts/post_detail.html': f'/{self.author.username}/{self.post.id}/',
         }
 
         for template, address in templates_url_names.items():
@@ -67,7 +67,7 @@ class PostURLTests(TestCase):
     def test_new_exists_at_desired_location_authorized(self):
         """Страница доступна авторизованному пользователю."""
 
-        response = self.authorized_author_client.get('/new/')
+        response = self.authorized_author_client.get('/create/')
         self.assertEqual(response.status_code, HTTPStatus.OK)
 
     def test_urls_exist_at_desired_location_authorized(self):
@@ -83,20 +83,20 @@ class PostURLTests(TestCase):
                 response = self.authorized_client.get(address)
                 self.assertEqual(response.status_code, HTTPStatus.FOUND)
 
-    def test_new_post_redirect_anonymous_on_admin_login(self):
-        """Страница 'new_post' перенаправит анонимного
+    def test_create_post_redirect_anonymous_on_admin_login(self):
+        """Страница 'create_post' перенаправит анонимного
         пользователя на страницу логина."""
 
-        response = self.guest_client.get('/new/', follow=True)
+        response = self.guest_client.get('/create/', follow=True)
         self.assertRedirects(
-            response, '/auth/login/?next=/new/')
+            response, '/auth/login/?next=/create/')
 
     def test_post_edit_uses_correct_template(self):
         """post_edit использует соответствующий шаблон."""
 
         response = self.authorized_author_client.get(
             f'/{self.author.username}/{self.post.id}/edit/')
-        self.assertTemplateUsed(response, 'posts/new_post.html')
+        self.assertTemplateUsed(response, 'posts/create_post.html')
 
     def test_post_edit_exists_for_author(self):
         """Страница 'post_edit' доступна автору поста."""
@@ -104,18 +104,6 @@ class PostURLTests(TestCase):
         response = self.authorized_author_client.get(
             f'/{self.author.username}/{self.post.id}/edit/')
         self.assertEqual(response.status_code, HTTPStatus.OK)
-
-    def test_post_edit_redirect_anonymous_on_admin_login(self):
-        """Страница 'post_edit' перенаправит анонимного
-        пользователя на страницу логина."""
-
-        response = self.guest_client.get(
-            f'/{self.author.username}/{self.post.id}/edit/')
-
-        self.assertRedirects(
-            response, ('/auth/login/?next=/'
-                       f'{self.author.username}/{self.post.id}/edit/')
-        )
 
     def test_post_edit_redirect_auth_on_post_view(self):
         """Страница 'post_edit' перенаправит авторизованного не автора

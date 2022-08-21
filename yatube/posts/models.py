@@ -8,7 +8,7 @@ class Group(models.Model):
     title = models.CharField(
         verbose_name='Название группы',
         max_length=200,
-        help_text='Укажите заголовок группы'
+        help_text='Название группы'
     )
 
     slug = models.SlugField('Адрес', unique=True)
@@ -25,31 +25,66 @@ class Group(models.Model):
 
 class Post(models.Model):
     text = models.TextField(
-        verbose_name='Текст поста',
-        help_text='Введите текст поста'
+        verbose_name='Текст',
+        help_text='Напишите ваш пост'
     )
 
-    pub_date = models.DateTimeField('Дата публикации', auto_now_add=True)
+    pub_date = models.DateTimeField(
+        'Дата публикации',
+        auto_now_add=True
+    )
 
-    author = models.ForeignKey(User,
-                               verbose_name='Автор',
-                               on_delete=models.CASCADE,
-                               related_name='posts')
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name='Автор',
+        related_name='posts'
+    )
 
-    group = models.ForeignKey(Group,
-                              verbose_name='Группа',
-                              on_delete=models.SET_NULL,
-                              related_name='posts',
-                              blank=True,
-                              null=True)
+    group = models.ForeignKey(
+        Group,
+        on_delete=models.SET_NULL,
+        related_name='posts',
+        blank=True,
+        null=True,
+        verbose_name='Группа',
+        help_text='Выберите группу'
+    )
 
-    image = models.ImageField(upload_to='posts/', blank=True, null=True)
+    image = models.ImageField(
+        upload_to='posts/',
+        blank=True,
+        null=True
+    )
 
     class Meta:
-        ordering = ['-pub_date']
+        ordering = ('-pub_date',)
+        verbose_name = 'Пост'
+        verbose_name_plural = 'Посты'
 
     def __str__(self):
         return self.text[:15]
+
+    def test_help_text_name(self):
+        """help_text в модели Group совпадает"""
+        group = GroupModelTest.group
+        help_text_fields = {
+            'title': 'Название группы',
+            'description': 'Описание группы',
+        }
+
+        for value, expected in help_text_fields.items():
+            with self.subTest(value=value):
+                self.assertEqual(
+                    group._meta.get_field(value).help_text,
+                    expected)
+
+    def test_group_name_is_title_fild(self):
+        """В поле __str__  объекта group записано значение поля group.title."""
+
+        group = GroupModelTest.group
+        expected_object_name = group.title
+        self.assertEqual(expected_object_name, str(group))
 
 
 class Comment(models.Model):

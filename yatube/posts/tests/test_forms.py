@@ -75,8 +75,8 @@ class PostFormTests(TestCase):
         self.authorized_author_client = Client()
         self.authorized_author_client.force_login(self.author)
 
-    def test_create_new_post(self):
-        """Создание нового поста через форму страницы new_post"""
+    def test_create_post_create(self):
+        """Создание нового поста через форму страницы post_create"""
 
         posts_count = Post.objects.count()
 
@@ -87,7 +87,7 @@ class PostFormTests(TestCase):
         }
 
         response = self.authorized_client.post(
-            reverse('posts:new_post'),
+            reverse('posts:post_create'),
             data=form_data,
             follow=True,
         )
@@ -102,39 +102,40 @@ class PostFormTests(TestCase):
             ).exists()
         )
 
-    def test_update_post_edit(self):
-        """
-        При редактировании поста через форму изменяется соответствующая запись
-        в базе данных.
-        """
 
-        form_data = {
-            'text': 'Отредактированная запись в форме страницы post_edit',
-            'group': self.group.id,
-            'image': self.uploaded2,
-        }
+def test_update_post_edit(self):
+    """
+    При редактировании поста через форму изменяется соответствующая запись
+    в базе данных.
+    """
 
-        response = self.authorized_author_client.post(
-            reverse(
-                'posts:post_edit',
-                kwargs={
-                    'username': self.author.username,
-                    'post_id': self.post.id}
-            ),
-            data=form_data,
-            follow=True,
-        )
+    form_data = {
+        'text': 'Отредактированная запись в форме страницы post_edit',
+        'group': self.group.id,
+        'image': self.uploaded2,
+    }
 
-        self.assertRedirects(response, reverse(
-                             'posts:post',
-                             kwargs={
-                                 'username': self.author.username,
-                                 'post_id': self.post.id}))
+    response = self.authorized_author_client.post(
+        reverse(
+            'post_edit',
+            kwargs={
+                'username': self.author.username,
+                'post_id': self.post.id}
+        ),
+        data=form_data,
+        follow=True,
+    )
 
-        self.assertTrue(
-            Post.objects.filter(
-                text=form_data['text'],
-                group=form_data['group'],
-                image='posts/small2.gif',
-            ).exists()
-        )
+    self.assertRedirects(response, reverse(
+        'post',
+        kwargs={
+            'username': self.author.username,
+            'post_id': self.post.id}))
+
+    self.assertTrue(
+        Post.objects.filter(
+            text=form_data['text'],
+            group=form_data['group'],
+            image='posts/small2.gif',
+        ).exists()
+    )

@@ -1,49 +1,32 @@
-<!-- templates/about/author.html -->
+<!-- templates/about/tech.html -->
 {% extends "base.html" %}
 {% block title %}Технологии{% endblock %}
-{% block header %} {% endblock %}
 {% block content %}
-  <div class="row">
-    <!-- Левый вспомогательный блок -->
-    <div class="col-md-3 mb-3 mt-1">
-      <div class="card">
-        <div class="card-body">
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-              <div class="h3">
-                Технологии
-              </div>
-            </li>
-            <li class="list-group-item">
-              <div class="h6 text-muted">
-                На этой странице можно рассказать:
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <!-- Тело страницы -->
-    <div class="col-md-9">
-      <div class="card-body">
-        <div class="card-text">
-          <p> "Технологии"</p>
-            В проекте реализованы следующие функции:
-            <p> - добавление/удаление постов авторизованными пользователями</p>
-            <p> - редактирование постов только его автором</p>
-            <p> - возможность авторизованным пользователям оставлять комментарии к постам</p>
-            <p> - подписка/отписка на понравившихся авторов</p>
-            <p> - создание отдельной ленты с постами авторов, на которых подписан пользователь</p>
-            <p> - создание отдельной ленты постов по группам(тематикам)</p>
-            Инструментарий:
-            <p> Django 2.2</p>
-            <p> Python 3.9</p>
-            <p> Django Unittest</p>
-            <p> Django debug toolbar</p>
-            <p>  PostgreSQL</p>
-            <p>  Django ORM</p>
-        </div>
-      </div>
-    </div>
-  </div>
+{% comment %} Колонки с отступом сверху и снизу {% endcomment %}
+<div class="row">
+  <h1>Вот что я умею</h1>
+  {% comment %}
+    Боковой блок со списком технологий
+    Займет всю ширину блока на мобильном
+    и 25% при размерах экрана ≥768px
+  {% endcomment %}
+  <aside class="col-12 col-md-3">
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">
+        Python
+      </li>
+      <li class="list-group-item">
+        Django
+      </li>
+    </ul>
+  </aside>
+  {% comment %}
+    Статья
+    Займет всю ширину блока на мобильном
+    и 75% при размерах экрана ≥768px
+  {% endcomment %}
+  <article class="col-12 col-md-9">
+    <p>Текст страницы "Технологии"</p>
+  </article>
+</div>
 {% endblock %}

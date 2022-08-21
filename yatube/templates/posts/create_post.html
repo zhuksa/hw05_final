@@ -19,7 +19,7 @@
       {% if post_edit %} 
         action="{% url 'posts:post_edit' post_edit.author.username post_edit.id %}"
       {% else %} 
-        action="{% url 'posts:new_post' %}" 
+        action="{% url 'posts:post_create' %}"
       {% endif %}>
 
     {% csrf_token %}

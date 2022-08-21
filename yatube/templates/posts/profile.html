@@ -11,12 +11,12 @@
       </div>
 
       <div class="col-md-9">
-        {% for post in page %}       
+        {% for post in page %}
           {% include 'includes/post_item.html' %}
         {% endfor %}
       </div>
       
-        {% include "includes/paginator.html" with items=page paginator=paginator %}
+        {% include "posts/includes/paginator.html" with items=page paginator=paginator %}
     </div>
   </main>
 {% endblock %}
