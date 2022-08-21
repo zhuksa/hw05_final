@@ -1,6 +1,5 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.views.decorators.http import require_GET
 from django.core.cache import cache
@@ -86,7 +85,6 @@ def post_detail(request, username, post_id):
     return render(request, 'posts/post_detail.html', context)
 
 
-@login_required
 def add_comment(request, username, post_id):
     post = get_object_or_404(Post, id=post_id)
     form = CommentForm(request.POST or None)
@@ -100,7 +98,6 @@ def add_comment(request, username, post_id):
     return redirect('posts:post_detail', username, post_id)
 
 
-@login_required
 def post_create(request):
     form = PostForm(request.POST or None, files=request.FILES or None)
 
@@ -141,7 +138,6 @@ def post_edit(request, username, post_id):
     )
 
 
-@login_required
 def profile(request, username):
     author = get_object_or_404(User, username=username)
 
@@ -168,7 +164,6 @@ def profile(request, username):
     return render(request, 'posts/profile.html', context)
 
 
-@login_required
 def follow_index(request):
     posts = Post.objects.filter(author__following__user=request.user)
 
@@ -179,7 +174,6 @@ def follow_index(request):
     return render(request, "posts/follow.html", {'page_obj': page})
 
 
-@login_required
 def profile_follow(request, username):
     author = get_object_or_404(User, username=username)
 
@@ -192,7 +186,6 @@ def profile_follow(request, username):
     return redirect('posts:profile', username)
 
 
-@login_required
 def profile_unfollow(request, username):
     author = get_object_or_404(User, username=username)
     Follow.objects.filter(author=author, user=request.user).delete()
