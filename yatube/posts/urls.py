@@ -20,6 +20,8 @@ urlpatterns = [
          views.follow_index,
          name='follow_index'),
 
+    path('profile/<str:username>/', views.profile, name='profile'),
+
     path('<str:username>/',
          views.profile,
          name='profile'),
@@ -31,6 +33,8 @@ urlpatterns = [
     path('<str:username>/<int:post_id>/',
          views.post_detail,
          name='post_detail'),
+
+    path('posts/<int:post_id>/', views.post_detail, name='post_detail'),
 
     path('<str:username>/<int:post_id>/edit/',
          views.post_edit,
