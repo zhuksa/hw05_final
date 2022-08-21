@@ -21,15 +21,17 @@ urlpatterns = [
          views.follow_index,
          name='follow_index'),
 
-
     path('<str:username>/',
          views.profile,
          name='profile'),
+
+    path('profile/<str:username>/', views.profile, name='profile'),
 
     path('group/<slug:slug>/',
          views.group_posts,
          name='group_list'),
 
+    path('posts/<int:post_id>/', views.post_detail, name='post_detail'),
 
     path('<str:username>/<int:post_id>/',
          views.post_detail,
