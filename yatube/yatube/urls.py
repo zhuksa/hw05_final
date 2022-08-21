@@ -6,6 +6,8 @@ from django.conf import settings
 
 handler404 = 'posts.views.page_not_found'
 handler500 = 'posts.views.server_error'
+handler401 = 'posts.views.failure'
+
 
 urlpatterns = [
     path('about/', include('about.urls', namespace='about')),

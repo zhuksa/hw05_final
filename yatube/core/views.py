@@ -10,4 +10,4 @@ def csrf_failure(request, reason=''):
 
 
 def failure(request, reason=''):
-    return render(request, 'core/403.html')
+    return render(request, 'core/403.html', {'path': request.path}, status=404)
