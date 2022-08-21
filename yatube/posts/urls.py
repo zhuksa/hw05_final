@@ -30,11 +30,11 @@ urlpatterns = [
          views.group_posts,
          name='group_list'),
 
+    path('posts/<int:post_id>/', views.post_detail, name='post_detail'),
+
     path('<str:username>/<int:post_id>/',
          views.post_detail,
          name='post_detail'),
-
-    path('posts/<int:posts_id>/', views.post_detail, name='post_detail'),
 
     path('<str:username>/<int:post_id>/edit/',
          views.post_edit,
