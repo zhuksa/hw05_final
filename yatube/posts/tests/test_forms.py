@@ -102,7 +102,6 @@ class PostFormTests(TestCase):
             ).exists()
         )
 
-
     def test_update_post_edit(self):
         """
         При редактировании поста через форму изменяется соответствующая запись
@@ -122,9 +121,9 @@ class PostFormTests(TestCase):
                     'username': self.author.username,
                     'post_id': self.post.id}
             ),
-         data=form_data,
+            data=form_data,
             follow=True,
-     )
+        )
 
         self.assertRedirects(response, reverse(
             'posts:post_detail',
