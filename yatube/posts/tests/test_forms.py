@@ -75,7 +75,6 @@ class PostFormTests(TestCase):
         self.authorized_author_client = Client()
         self.authorized_author_client.force_login(self.author)
 
-
     def test_update_post_edit(self):
         """
         При редактировании поста через форму изменяется соответствующая запись
