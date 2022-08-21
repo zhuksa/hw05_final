@@ -141,6 +141,7 @@ def post_edit(request, username, post_id):
     )
 
 
+@login_required
 def profile(request, username):
     author = get_object_or_404(User, username=username)
 
