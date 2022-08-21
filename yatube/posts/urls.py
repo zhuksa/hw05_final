@@ -27,6 +27,8 @@ urlpatterns = [
 
     path('profile/<str:username>/', views.profile, name='profile'),
 
+    path('profile/<str:username>/follow/', views.profile, name='profile'),
+
     path('group/<slug:slug>/',
          views.group_posts,
          name='group_list'),
