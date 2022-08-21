@@ -19,6 +19,7 @@
     <main>
       <div class="container">
         <h1>{% block header %}Социальная сеть{% endblock %}</h1>
+        <p>{{ group.description }}</p>
         {% block content %}
           <!-- Содержимое страницы -->
         {% endblock content %}
