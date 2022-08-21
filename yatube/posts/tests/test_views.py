@@ -203,7 +203,7 @@ class PostPagesTests(TestCase):
 
         response = self.guest_client.get(reverse(
             'posts:post_detail',
-            kwargs={'username': self.author.username, 'post_id': self.post.id})
+            kwargs={'post_id': self.post.id})
         )
 
         self.assertEqual(response.context['post_detail'].text,

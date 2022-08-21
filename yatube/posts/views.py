@@ -61,7 +61,6 @@ def group_posts(request, slug):
 
 def post_detail(request, username, post_id):
     post_detail = get_object_or_404(Post,
-                                    author__username=username,
                                     id=post_id)
     form = CommentForm(request.POST or None)
     comments = post_detail.comments.all()
@@ -118,7 +117,7 @@ def post_create(request):
     )
 
 
-def post_edit(request, post_id):
+def post_edit(request, username, post_id):
     post_edit = get_object_or_404(Post, id=post_id)
     form = PostForm(
         request.POST or None,

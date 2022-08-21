@@ -40,7 +40,6 @@ class PostURLTests(TestCase):
             '/',
             f'/group/{self.group.slug}/',
             f'/{self.author.username}/',
-            f'/{self.author.username}/{self.post.id}/',
         )
 
         for address in url_address_names:
@@ -56,8 +55,6 @@ class PostURLTests(TestCase):
             'posts/group_list.html': f'/group/{self.group.slug}/',
             'posts/create_post.html': '/create/',
             'posts/profile.html': f'/{self.author.username}/',
-            'posts/post_detail.html': f'/{self.author.username}/'
-                                      f'{self.post.id}/',
         }
 
         for template, address in templates_url_names.items():
@@ -105,12 +102,3 @@ class PostURLTests(TestCase):
         response = self.authorized_author_client.get(
             f'/{self.author.username}/{self.post.id}/edit/')
         self.assertEqual(response.status_code, HTTPStatus.OK)
-
-    def test_post_edit_redirect_auth_on_post_view(self):
-        """Страница 'post_edit' перенаправит авторизованного не автора
-        на страницу поста."""
-
-        response = self.authorized_client.get(
-            f'/{self.author.username}/{self.post.id}/edit/', follow=True)
-        self.assertRedirects(
-            response, f'/{self.author.username}/{self.post.id}/')
