@@ -118,8 +118,8 @@ def post_create(request):
     )
 
 
-def post_edit(request, username, post_id):
-    post_edit = get_object_or_404(Post, id=post_id, username=username)
+def post_edit(request, post_id):
+    post_edit = get_object_or_404(Post, id=post_id)
     form = PostForm(
         request.POST or None,
         files=request.FILES or None,
