@@ -1,7 +1,6 @@
 import shutil
 import tempfile
 
-from django.urls.base import reverse
 from django.contrib.auth import get_user_model
 from django.test import TestCase, Client
 from django.conf import settings
