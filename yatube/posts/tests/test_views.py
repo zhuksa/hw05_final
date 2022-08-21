@@ -307,14 +307,14 @@ class PostPagesTests(TestCase):
             'Количество постов одинаково')
 
     def test_add_follow(self):
-        """ подписка: обращаешься к follow_index, через context['page_obj'].object_list[0]
+        """ подписка: обращаешься к follow_index,
+        через context['page_obj'].object_list[0]
         находишь количество подписок, и сравниваешь их с 0, т.е проверяешь,
         что еще не подписалась ни на кого, затем подписываешься
         self.follower_client.get(reverse('profile_follow',
         kwargs{'username': self.post.author})) и проверяешь,
         что подписалась, сравнение уже будет с 1"""
 
-        # проверяем, что follower_client еще не подписан на автора поста
         response_1 = self.authorized_client.get(reverse('posts:follow_index'))
         page_object_1 = response_1.context['page_obj'].object_list
         self.assertEqual((len(page_object_1)), 0)
