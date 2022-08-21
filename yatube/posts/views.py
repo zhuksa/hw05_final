@@ -116,6 +116,7 @@ def post_create(request):
         'posts/create_post.html',
         {'form': form}
     )
+    return render(request, template, context)
 
 
 def post_edit(request, username, post_id):
