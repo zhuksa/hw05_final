@@ -59,10 +59,8 @@ def group_posts(request, slug):
     )
 
 
-def post_detail(request, username, post_id):
-    post_detail = get_object_or_404(Post,
-                                    author__username=username,
-                                    id=post_id)
+def post_detail(request, post_id, username=None):
+    post_detail = get_object_or_404(Post, id=post_id)
     form = CommentForm(request.POST or None)
     comments = post_detail.comments.all()
 
@@ -109,7 +107,7 @@ def post_create(request):
         post.author = request.user
         post.save()
 
-        return redirect('posts:index')
+        return redirect('posts:profile', post.author.username)
 
     return render(
         request,
@@ -119,25 +117,25 @@ def post_create(request):
 
 
 def post_edit(request, username, post_id):
-    post_edit = get_object_or_404(Post, id=post_id)
+    post = get_object_or_404(Post, id=post_id)
     form = PostForm(
         request.POST or None,
         files=request.FILES or None,
-        instance=post_edit
+        instance=post
     )
 
-    if request.user != post_edit.author:
-        return redirect('posts:post_detail', post_edit.author, post_edit.id)
+    if request.user != post.author:
+        return redirect('posts:post_detail', post.id)
 
     if form.is_valid():
-        post_edit.save()
+        post.save()
 
-        return redirect('posts:post_detail', post_edit.author, post_edit.id)
+        return redirect('posts:post_detail', post.id)
 
     return render(
         request,
         'posts/create_post.html',
-        {'form': form, 'post_edit': post_edit}
+        {'form': form, 'post_edit': post}
     )
 
 
