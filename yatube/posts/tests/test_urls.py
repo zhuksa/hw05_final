@@ -113,4 +113,4 @@ class PostURLTests(TestCase):
         response = self.authorized_client.get(
             f'/{self.author.username}/{self.post.id}/edit/', follow=True)
         self.assertRedirects(
-            response, f'/{self.author.username}/{self.post.id}/')
+            response, f'/posts/{self.post.id}/')
