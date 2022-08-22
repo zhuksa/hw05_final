@@ -27,9 +27,17 @@ urlpatterns = [
 
     path('profile/<str:username>/', views.profile, name='profile'),
 
-    path('profile/<str:username>/follow/', views.profile_follow, name='follow'),
+    path(
+        'profile/<str:username>/follow/',
+        views.profile_follow,
+        name='follow'
+    ),
 
-    path('profile/<str:username>/unfollow/', views.profile_unfollow, name='unfollow'),
+    path(
+        'profile/<str:username>/unfollow/',
+        views.profile_unfollow,
+        name='unfollow'
+    ),
 
     path('group/<slug:slug>/',
          views.group_posts,
