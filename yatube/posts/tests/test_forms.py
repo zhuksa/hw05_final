@@ -2,15 +2,12 @@ import shutil
 import tempfile
 
 from django.urls.base import reverse
-from django.contrib.auth import get_user_model
+from posts.models import User
 from django.test import TestCase, Client
 from django.conf import settings
 from django.core.files.uploadedfile import SimpleUploadedFile
 
 from posts.models import Post, Group
-
-
-User = get_user_model()
 
 
 class PostFormTests(TestCase):
@@ -46,7 +43,7 @@ class PostFormTests(TestCase):
             content_type='image/gif'
         )
 
-        small_gif2 = (
+        small_gif_second = (
             b'\x47\x49\x46\x38\x39\x61\x02\x00'
             b'\x01\x00\x80\x00\x00\x00\x00\x00'
             b'\xFF\xFF\xFF\x21\xF9\x04\x00\x00'
@@ -57,7 +54,7 @@ class PostFormTests(TestCase):
 
         cls.uploaded2 = SimpleUploadedFile(
             name='small2.gif',
-            content=small_gif2,
+            content=small_gif_second,
             content_type='image/gif'
         )
 

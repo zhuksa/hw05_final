@@ -8,10 +8,6 @@ app_name = 'posts'
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('500/', views.server_error, name='500'),
-    path('404/', views.page_not_found, name='404'),
-    path('403/', views.failure, name='403'),
-    path('404csrf/', views.page_not_found, name='404csrf'),
 
     path('create/',
          views.post_create,

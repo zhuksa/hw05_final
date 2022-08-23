@@ -4,9 +4,9 @@ from django.conf.urls import handler404, handler500
 from django.conf.urls.static import static
 from django.conf import settings
 
-handler404 = 'posts.views.page_not_found'
-handler500 = 'posts.views.server_error'
-handler403 = 'posts.views.failure'
+handler404 = 'core.views.page_not_found'
+handler500 = 'core.views.server_error'
+handler403 = 'core.views.failure'
 
 
 urlpatterns = [

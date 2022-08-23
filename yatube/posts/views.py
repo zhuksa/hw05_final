@@ -9,28 +9,6 @@ from .forms import CommentForm, PostForm
 from .models import Follow, Post, Group, User
 
 
-def page_not_found(request, exception):
-    return render(
-        request,
-        'core/404.html',
-        {'path': request.path},
-        status=404
-    )
-
-
-def failure(request, exception):
-    return render(
-        request,
-        'core/403.html',
-        {'path': request.path},
-        status=403
-    )
-
-
-def server_error(request):
-    return render(request, 'core/500.html', status=500)
-
-
 @require_GET
 def index(request):
     posts = cache.get('posts:index')
@@ -61,12 +39,11 @@ def group_posts(request, slug):
 
 def post_detail(request, post_id, username=None):
     post_detail = get_object_or_404(Post, id=post_id)
-    form = CommentForm(request.POST or None)
+    form = CommentForm()
     comments = post_detail.comments.all()
 
     posts_count = post_detail.author.posts.count()
-    followers_count = Follow.objects.filter(author=post_detail.author).count()
-    follow_count = Follow.objects.filter(user=post_detail.author).count()
+    followers_count = Follow.objects.count()
 
     following = request.user.is_authenticated and Follow.objects.filter(
         user=request.user, author=post_detail.author).exists()
@@ -76,7 +53,6 @@ def post_detail(request, post_id, username=None):
         'post_detail': post_detail,
         'posts_count': posts_count,
         'comments': comments,
-        'follow_count': follow_count,
         'followers_count': followers_count,
         'following': following,
     }
@@ -118,14 +94,15 @@ def post_create(request):
 
 def post_edit(request, username, post_id):
     post = get_object_or_404(Post, id=post_id)
+
+    if request.user != post.author:
+        return redirect('posts:post_detail', post.id)
+
     form = PostForm(
         request.POST or None,
         files=request.FILES or None,
         instance=post
     )
-
-    if request.user != post.author:
-        return redirect('posts:post_detail', post.id)
 
     if form.is_valid():
         post.save()
@@ -147,8 +124,7 @@ def profile(request, username):
     page = paginator.get_page(page_number)
 
     posts_count = author.posts.count()
-    followers_count = Follow.objects.filter(author=author).count()
-    follow_count = Follow.objects.filter(user=author).count()
+    followers_count = Follow.objects.count()
 
     following = request.user.is_authenticated and Follow.objects.filter(
         user=request.user, author=author).exists()
@@ -157,7 +133,6 @@ def profile(request, username):
         'author': author,
         'posts_count': posts_count,
         'page_obj': page,
-        'follow_count': follow_count,
         'followers_count': followers_count,
         'following': following,
     }
@@ -192,6 +167,7 @@ def profile_follow(request, username):
 @login_required
 def profile_unfollow(request, username):
     author = get_object_or_404(User, username=username)
-    Follow.objects.filter(author=author, user=request.user).delete()
+    if request.user != author:
+        Follow.objects.filter(author=author, user=request.user).delete()
 
     return redirect('posts:profile', username)
