@@ -219,15 +219,15 @@ class PostPagesTests(TestCase):
 
         response = self.authorized_client.get(reverse(
             'posts:group_list',
-            kwargs={'slug': self.group_second.slug})
+            kwargs={'slug': self.group_one.slug})
         )
 
         self.assertEqual(response.context['group'].title,
-                         self.group_second.title, 'Неверный заголовок группы 2')
+                         self.group_one.title, 'Неверный заголовок группы 2')
         self.assertEqual(response.context['group'].slug,
-                         self.group_second.slug, 'Неверный slug группы 2')
+                         self.group_one.slug, 'Неверный slug группы 2')
         self.assertEqual(response.context['group'].description,
-                         self.group_second.description,
+                         self.group_one.description,
                          'Неверное описание группы 2')
 
     def test_post_edit_uses_correct_context(self):
@@ -259,7 +259,8 @@ class PostPagesTests(TestCase):
         )
 
         self.assertEqual(response.context['group'].title,
-                         self.group_second.title, 'Неверный заголовок группы 2')
+                         self.group_second.title,
+                         'Неверный заголовок группы 2')
         self.assertEqual(response.context['group'].slug,
                          self.group_second.slug, 'Неверный slug группы 2')
         self.assertEqual(response.context['group'].description,
@@ -312,17 +313,17 @@ class PostPagesTests(TestCase):
         kwargs{'username': self.post.author})) и проверяешь,
         что подписалась, сравнение уже будет с 1"""
 
-        response_second = self.authorized_client.get(reverse('posts:follow_index'))
-        page_object_first = response_second.context['page_obj'].object_list
-        self.assertEqual((len(page_object_first)), 0)
+        response_one = self.authorized_client.get(reverse('posts:follow_index'))
+        page_object_one = response_one.context['page_obj'].object_list
+        self.assertEqual((len(page_object_one)), 0)
 
         self.authorized_client.get(
             reverse('posts:profile_follow',
                     kwargs={'username': self.post.author})
         )
-        response_second = self.authorized_client.get(reverse('posts:follow_index'))
-        page_object_second = response_second.context['page_obj'].object_list
-        self.assertEqual((len(page_object_second)), 1)
+        response_two = self.authorized_client.get(reverse('posts:follow_index'))
+        page_object_two = response_two.context['page_obj'].object_list
+        self.assertEqual((len(page_object_two)), 1)
 
     def test_unfollow(self):
         self.authorized_client.get(
@@ -330,16 +331,16 @@ class PostPagesTests(TestCase):
                     kwargs={'username': self.post.author})
         )
 
-        response_second = self.authorized_client.get(reverse('posts:follow_index'))
-        page_object_first = response_second.context['page_obj'].object_list
+        response_one = self.authorized_client.get(reverse('posts:follow_index'))
+        page_object_one = response_one.context['page_obj'].object_list
 
-        self.assertEqual((len(page_object_first)), 1)
+        self.assertEqual((len(page_object_one)), 1)
 
         self.authorized_client.get(
             reverse('posts:profile_unfollow',
                     kwargs={'username': self.post.author})
         )
 
-        response_second = self.authorized_client.get(reverse('posts:follow_index'))
-        page_object_2 = response_second.context['page_obj'].object_list
-        self.assertEqual((len(page_object_2)), 0)
+        response_two = self.authorized_client.get(reverse('posts:follow_index'))
+        page_object_two = response_two.context['page_obj'].object_list
+        self.assertEqual((len(page_object_two)), 0)
