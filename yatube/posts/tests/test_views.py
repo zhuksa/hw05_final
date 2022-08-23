@@ -313,7 +313,8 @@ class PostPagesTests(TestCase):
         kwargs{'username': self.post.author})) и проверяешь,
         что подписалась, сравнение уже будет с 1"""
 
-        response_one = self.authorized_client.get(reverse('posts:follow_index'))
+        response_one = self.authorized_client.get(reverse
+                                                  ('posts:follow_index'))
         page_object_one = response_one.context['page_obj'].object_list
         self.assertEqual((len(page_object_one)), 0)
 
@@ -321,7 +322,8 @@ class PostPagesTests(TestCase):
             reverse('posts:profile_follow',
                     kwargs={'username': self.post.author})
         )
-        response_two = self.authorized_client.get(reverse('posts:follow_index'))
+        response_two = self.authorized_client.get(reverse
+                                                  ('posts:follow_index'))
         page_object_two = response_two.context['page_obj'].object_list
         self.assertEqual((len(page_object_two)), 1)
 
@@ -331,7 +333,8 @@ class PostPagesTests(TestCase):
                     kwargs={'username': self.post.author})
         )
 
-        response_one = self.authorized_client.get(reverse('posts:follow_index'))
+        response_one = self.authorized_client.get(reverse
+                                                  ('posts:follow_index'))
         page_object_one = response_one.context['page_obj'].object_list
 
         self.assertEqual((len(page_object_one)), 1)
@@ -341,6 +344,7 @@ class PostPagesTests(TestCase):
                     kwargs={'username': self.post.author})
         )
 
-        response_two = self.authorized_client.get(reverse('posts:follow_index'))
+        response_two = self.authorized_client.get(reverse
+                                                  ('posts:follow_index'))
         page_object_two = response_two.context['page_obj'].object_list
         self.assertEqual((len(page_object_two)), 0)
