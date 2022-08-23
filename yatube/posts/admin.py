@@ -24,7 +24,7 @@ class GroupAdmin(admin.ModelAdmin):
     search_fields = ('title',)
 
 
-@admin.sit.register(Follow)
+@admin.register(Follow)
 class FollowAdmin(admin.ModelAdmin):
     list_display = ('user', 'author')
 
