@@ -23,7 +23,7 @@ class PostForm(ModelForm):
 class CommentForm(ModelForm):
     class Meta:
         model = Comment
-        fields = ('text',)
+        fields = ['text']
         help_texts = {'text': 'Hапишите комментарий'}
         labels = {'text': 'Комментарий'}
         widgets = {'text': Textarea(attrs={'class': 'form-control'})}
