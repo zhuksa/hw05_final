@@ -43,7 +43,7 @@ class PostFormTests(TestCase):
             content_type='image/gif'
         )
 
-        small_gif_second = (
+        small_gif_test = (
             b'\x47\x49\x46\x38\x39\x61\x02\x00'
             b'\x01\x00\x80\x00\x00\x00\x00\x00'
             b'\xFF\xFF\xFF\x21\xF9\x04\x00\x00'
@@ -52,9 +52,9 @@ class PostFormTests(TestCase):
             b'\x0A\x00\x3B'
         )
 
-        cls.uploaded2 = SimpleUploadedFile(
+        cls.uploaded_test = SimpleUploadedFile(
             name='small2.gif',
-            content=small_gif_second,
+            content=small_gif_test,
             content_type='image/gif'
         )
 
@@ -111,7 +111,7 @@ class PostFormTests(TestCase):
         form_data = {
             'text': 'Отредактированная запись в форме страницы post_edit',
             'group': self.group.id,
-            'image': self.uploaded2,
+            'image': self.uploaded_test,
         }
 
         response = self.authorized_author_client.post(

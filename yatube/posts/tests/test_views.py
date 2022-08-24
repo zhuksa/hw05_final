@@ -27,7 +27,7 @@ class PostPagesTests(TestCase):
             description='Тестовое описание группы',
         )
 
-        cls.group_second = Group.objects.create(
+        cls.group_test = Group.objects.create(
             title='Тестовый заголовок группы 2',
             slug='test_slug_2',
             description='Тестовое описание группы 2',
@@ -103,16 +103,16 @@ class PostPagesTests(TestCase):
 
         response = self.guest_client.get(reverse('posts:index'))
         first_object = response.context['page_obj'].object_list[0]
-        post_text_second = first_object.text
-        post_author_second = first_object.author.username
+        post_text = first_object.text
+        post_author = first_object.author.username
 
         self.assertEqual(
-            post_text_second,
+            post_text,
             'Тестовый текст нового поста',
             'Неверный текст поста на главной странице'
         )
         self.assertEqual(
-            post_author_second,
+            post_author,
             f'{self.author.username}',
             'Неверный автор поста на главной странице'
         )
@@ -175,22 +175,22 @@ class PostPagesTests(TestCase):
         )
 
         first_object = response.context['page_obj'][0]
-        post_text_second = first_object.text
-        post_author_second = first_object.author.username
-        post_pic_second = first_object.image
+        post_text = first_object.text
+        post_author = first_object.author.username
+        post_pic = first_object.image
 
         self.assertEqual(
-            post_text_second,
+            post_text,
             'Тестовый текст поста',
             'Неверный текст поста на странице профиля'
         )
         self.assertEqual(
-            post_author_second,
+            post_author,
             f'{self.author.username}',
             'Неверный автор поста на странице профиля'
         )
         self.assertEqual(
-            post_pic_second,
+            post_pic,
             f'{self.post.image}',
             'Неверный текст поста на главной странице'
         )
@@ -219,15 +219,15 @@ class PostPagesTests(TestCase):
 
         response = self.authorized_client.get(reverse(
             'posts:group_list',
-            kwargs={'slug': self.group_one.slug})
+            kwargs={'slug': self.group_test.slug})
         )
 
         self.assertEqual(response.context['group'].title,
-                         self.group_one.title, 'Неверный заголовок группы 2')
+                         self.group_test.title, 'Неверный заголовок группы 2')
         self.assertEqual(response.context['group'].slug,
-                         self.group_one.slug, 'Неверный slug группы 2')
+                         self.group_test.slug, 'Неверный slug группы 2')
         self.assertEqual(response.context['group'].description,
-                         self.group_one.description,
+                         self.group_test.description,
                          'Неверное описание группы 2')
 
     def test_post_edit_uses_correct_context(self):
@@ -255,16 +255,16 @@ class PostPagesTests(TestCase):
 
         response = self.authorized_client.get(reverse(
             'posts:group_list',
-            kwargs={'slug': self.group_second.slug})
+            kwargs={'slug': self.group_test.slug})
         )
 
         self.assertEqual(response.context['group'].title,
-                         self.group_second.title,
+                         self.group_test.title,
                          'Неверный заголовок группы 2')
         self.assertEqual(response.context['group'].slug,
-                         self.group_second.slug, 'Неверный slug группы 2')
+                         self.group_test.slug, 'Неверный slug группы 2')
         self.assertEqual(response.context['group'].description,
-                         self.group_second.description,
+                         self.group_test.description,
                          'Неверное описание группы 2')
 
     def test_page_not_found(self):
@@ -313,19 +313,19 @@ class PostPagesTests(TestCase):
         kwargs{'username': self.post.author})) и проверяешь,
         что подписалась, сравнение уже будет с 1"""
 
-        response_one = self.authorized_client.get(reverse
+        response = self.authorized_client.get(reverse
                                                   ('posts:follow_index'))
-        page_object_one = response_one.context['page_obj'].object_list
-        self.assertEqual((len(page_object_one)), 0)
+        page_object = response.context['page_obj'].object_list
+        self.assertEqual((len(page_object)), 0)
 
         self.authorized_client.get(
             reverse('posts:profile_follow',
                     kwargs={'username': self.post.author})
         )
-        response_two = self.authorized_client.get(reverse
+        response_test = self.authorized_client.get(reverse
                                                   ('posts:follow_index'))
-        page_object_two = response_two.context['page_obj'].object_list
-        self.assertEqual((len(page_object_two)), 1)
+        page_object_test = response_test.context['page_obj'].object_list
+        self.assertEqual((len(page_object_test)), 1)
 
     def test_unfollow(self):
         self.authorized_client.get(
@@ -333,18 +333,18 @@ class PostPagesTests(TestCase):
                     kwargs={'username': self.post.author})
         )
 
-        response_one = self.authorized_client.get(reverse
+        response = self.authorized_client.get(reverse
                                                   ('posts:follow_index'))
-        page_object_one = response_one.context['page_obj'].object_list
+        page_object = response.context['page_obj'].object_list
 
-        self.assertEqual((len(page_object_one)), 1)
+        self.assertEqual((len(page_object)), 1)
 
         self.authorized_client.get(
             reverse('posts:profile_unfollow',
                     kwargs={'username': self.post.author})
         )
 
-        response_two = self.authorized_client.get(reverse
+        response_test = self.authorized_client.get(reverse
                                                   ('posts:follow_index'))
-        page_object_two = response_two.context['page_obj'].object_list
-        self.assertEqual((len(page_object_two)), 0)
+        page_object_test = response_test.context['page_obj'].object_list
+        self.assertEqual((len(page_object_test)), 0)
