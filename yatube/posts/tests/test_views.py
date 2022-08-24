@@ -314,7 +314,7 @@ class PostPagesTests(TestCase):
         что подписалась, сравнение уже будет с 1"""
 
         response = self.authorized_client.get(reverse
-                                                  ('posts:follow_index'))
+                                              ('posts:follow_index'))
         page_object = response.context['page_obj'].object_list
         self.assertEqual((len(page_object)), 0)
 
@@ -323,7 +323,7 @@ class PostPagesTests(TestCase):
                     kwargs={'username': self.post.author})
         )
         response_test = self.authorized_client.get(reverse
-                                                  ('posts:follow_index'))
+                                                   ('posts:follow_index'))
         page_object_test = response_test.context['page_obj'].object_list
         self.assertEqual((len(page_object_test)), 1)
 
@@ -334,7 +334,7 @@ class PostPagesTests(TestCase):
         )
 
         response = self.authorized_client.get(reverse
-                                                  ('posts:follow_index'))
+                                              ('posts:follow_index'))
         page_object = response.context['page_obj'].object_list
 
         self.assertEqual((len(page_object)), 1)
@@ -345,6 +345,6 @@ class PostPagesTests(TestCase):
         )
 
         response_test = self.authorized_client.get(reverse
-                                                  ('posts:follow_index'))
+                                                   ('posts:follow_index'))
         page_object_test = response_test.context['page_obj'].object_list
         self.assertEqual((len(page_object_test)), 0)
